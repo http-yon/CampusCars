@@ -1,0 +1,19 @@
+// Colección de Clientes
+db.createCollection("clientes")
+
+// Colección de Automóviles
+db.createCollection("automoviles")
+
+// Colección de Alquileres
+db.createCollection("alquileres")
+
+// Colección de Reservas
+db.createCollection("reservas")
+
+// Colección de Sucursales
+db.createCollection("sucursales")
+
+// Colección de Empleados
+db.createCollection("empleados")
+
+//entregas / devoluciones
