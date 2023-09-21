@@ -1,5 +1,7 @@
 import express from "express";
 import databaseConection from "../config/config.js";
+import router from "../routes/routes.js";
+
 
 class Server {
 
@@ -8,7 +10,7 @@ class Server {
         this.port = process.env.PORTXLR8
 
         //path
-
+        
 
         //middlewares
         this.middlewares()
@@ -28,6 +30,7 @@ class Server {
 
 
     routes(){
+        this.app.use("/carros",router)
     }
 
     listener(){
