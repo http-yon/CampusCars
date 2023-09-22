@@ -5,9 +5,13 @@ import Cliente from "../models/Cliente.js";
 import Empleado from "../models/Empleado.js";
 import Reserva from "../models/Reserva.js";
 import Sucursal from "../models/Sucursal.js";
+
 const router = express.Router();
 
-router.get("/alquileres", async (req, res) => {
+
+///* CRUDS *////////////////////////////////////////////
+/* ALQUILERES */
+router.get("/alquileresGet", async (req, res) => {
   try {
     const response = await Alquiler.find()
       .populate("clienteId")
@@ -21,7 +25,24 @@ router.get("/alquileres", async (req, res) => {
   }
 });
 
-router.get("/automoviles", async (req, res) => {
+router.post("/alquileresPost", async (req, res) => {
+  try {
+
+    const x = new Alquiler(req.body)
+    await x.save()
+    res.json(x)
+
+  } catch (error) {
+    console.log(error);
+    res.json("error");
+  }
+});
+
+
+
+
+/* AUTOMOVILES */
+router.get("/automovilesGet", async (req, res) => {
   try {
     const response = await Automovil.find().populate("sucursalId");
 
@@ -32,7 +53,24 @@ router.get("/automoviles", async (req, res) => {
   }
 });
 
-router.get("/clientes", async (req, res) => {
+router.post("/automovilesPost", async (req, res) => {
+  try {
+
+    const x = new Automovil(req.body)
+    await x.save()
+    res.json(x)
+
+  } catch (error) {
+    console.log(error);
+    res.json("error");
+  }
+});
+
+
+
+
+/* CLIENTES */
+router.get("/clientesGet", async (req, res) => {
   try {
     const response = await Cliente.find();
     res.json(response);
@@ -41,7 +79,25 @@ router.get("/clientes", async (req, res) => {
   }
 });
 
-router.get("/empleados", async (req, res) => {
+
+router.post("/clientesPost", async (req, res) => {
+  try {
+
+    const x = new Cliente(req.body)
+    await x.save()
+    res.json(x)
+
+  } catch (error) {
+    console.log(error);
+    res.json("error");
+  }
+});
+
+
+
+
+/* EMPLEADOS */
+router.get("/empleadosGet", async (req, res) => {
   try {
     const response = await Empleado.find().populate("sucursalId");
 
@@ -51,7 +107,25 @@ router.get("/empleados", async (req, res) => {
   }
 });
 
-router.get("/reservas", async (req, res) => {
+
+router.post("/empleadosPost", async (req, res) => {
+  try {
+
+    const x = new Empleado(req.body)
+    await x.save()
+    res.json(x)
+
+  } catch (error) {
+    console.log(error);
+    res.json("error");
+  }
+});
+
+
+
+
+/* RESERVAS */
+router.get("/reservasGet", async (req, res) => {
   try {
     const response = await Reserva.find()
       .populate("clienteId")
@@ -63,7 +137,24 @@ router.get("/reservas", async (req, res) => {
   }
 });
 
-router.get("/sucursales", async (req, res) => {
+router.post("/reservasPost", async (req, res) => {
+  try {
+
+    const x = new Reserva(req.body)
+    await x.save()
+    res.json(x)
+
+  } catch (error) {
+    console.log(error);
+    res.json("error");
+  }
+});
+
+
+
+
+/* SUCURSALES */
+router.get("/sucursalesGet", async (req, res) => {
   try {
     const response = await Sucursal.find();
     res.json(response);
@@ -71,5 +162,26 @@ router.get("/sucursales", async (req, res) => {
     res.json("error");
   }
 });
+
+
+router.post("/sucursalPost", async (req, res) => {
+  try {
+
+    const x = new Sucursal(req.body)
+    await x.save()
+    res.json(x)
+
+  } catch (error) {
+    console.log(error);
+    res.json("error");
+  }
+});
+
+
+///////////////////////////////////////////////
+
+
+
+
 
 export default router;
