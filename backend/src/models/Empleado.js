@@ -5,6 +5,7 @@ const empleadoSchema = mongoose.Schema({
   apellido: String,
   correoElectronico: String,
   sucursalId: { type: mongoose.Schema.Types.ObjectId, ref: "Sucursal" },
+  cargo: String
 });
 
 const Empleado = mongoose.model("Empleado", empleadoSchema, "empleados") 
