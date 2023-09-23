@@ -1,6 +1,7 @@
 import express from "express";
 import databaseConection from "../config/config.js";
 import router from "../routes/routes.js";
+import routerAuth from "../routes/authLogin.js";
 
 
 class Server {
@@ -31,6 +32,7 @@ class Server {
 
     routes(){
         this.app.use("/carros",router)
+        this.app.use("/login",routerAuth)
     }
 
     listener(){

@@ -57,10 +57,6 @@ router.put("/alquileresPut/:id", async (req, res) => {
   }
 });
 
-
-
-
-
 /* AUTOMOVILES */
 router.get("/automovilesGet", async (req, res) => {
   try {
@@ -106,10 +102,6 @@ router.put("/automovilesPut/:id", async (req, res) => {
   }
 });
 
-
-
-
-
 /* CLIENTES */
 /* router.get("/clientesGet", async (req, res) => {
   try {
@@ -152,10 +144,6 @@ router.put("/clientesPut/:id", async (req, res) => {
     res.json("error");
   }
 });
-
-
-
-
 
 /* EMPLEADOS */
 router.get("/empleadosGet", async (req, res) => {
@@ -200,10 +188,6 @@ router.put("/empleadosPut/:id", async (req, res) => {
     res.json("error");
   }
 });
-
-
-
-
 
 /* RESERVAS */
 router.get("/reservasGet", async (req, res) => {
@@ -250,10 +234,6 @@ router.put("/reservasPut/:id", async (req, res) => {
     res.json("error");
   }
 });
-
-
-
-
 
 /* SUCURSALES */
 router.get("/sucursalesGet", async (req, res) => {
@@ -304,7 +284,6 @@ export default router;
 
 ///* ENDPOINTS *//////////////////////////////////////////////
 
-
 //2. Mostrar todos los clientes registrados en la base de datos.
 router.get("/endpoint2", async (req, res) => {
   try {
@@ -315,11 +294,12 @@ router.get("/endpoint2", async (req, res) => {
   }
 });
 
-
 //3. Obtener todos los automóviles disponibles para alquiler.
 router.get("/endpoint3", async (req, res) => {
   try {
-    const response = await Automovil.find({ disponibilidad:true }).populate("sucursalId");
+    const response = await Automovil.find({ disponibilidad: true }).populate(
+      "sucursalId"
+    );
 
     res.json(response);
   } catch (error) {
@@ -327,14 +307,15 @@ router.get("/endpoint3", async (req, res) => {
     res.json("error");
   }
 });
-
 
 //4. Listar todos los alquileres activos junto con los datos de los clientes relacionados.
 router.get("/endpoint4", async (req, res) => {
   try {
-
-    //activo == en curso 
-    const response = await Alquiler.find({ estado:"En curso" }, { automovilId:0, sucursalId:0 }).populate("clienteId");
+    //activo == en curso
+    const response = await Alquiler.find(
+      { estado: "En curso" },
+      { automovilId: 0, sucursalId: 0 }
+    ).populate("clienteId");
 
     res.json(response);
   } catch (error) {
@@ -342,12 +323,16 @@ router.get("/endpoint4", async (req, res) => {
     res.json("error");
   }
 });
-
 
 //5. Mostrar todas las reservas pendientes con los datos del cliente y el automóvil reservado.
 router.get("/endpoint5", async (req, res) => {
   try {
-    const response = await Reserva.find({ estado:"Pendiente" },{ sucursalId:0 }).populate("clienteId").populate("automovilId");
+    const response = await Reserva.find(
+      { estado: "Pendiente" },
+      { sucursalId: 0 }
+    )
+      .populate("clienteId")
+      .populate("automovilId");
 
     res.json(response);
   } catch (error) {
@@ -355,13 +340,11 @@ router.get("/endpoint5", async (req, res) => {
     res.json("error");
   }
 });
-
-
 
 //6. Obtener los detalles del alquiler con el ID_Alquiler específico.
 router.get("/endpoint6/:id", async (req, res) => {
   try {
-    const response = await Alquiler.findOne({_id:req.params.id})
+    const response = await Alquiler.findOne({ _id: req.params.id })
       .populate("clienteId")
       .populate("automovilId")
       .populate("sucursalId");
@@ -372,14 +355,13 @@ router.get("/endpoint6/:id", async (req, res) => {
     res.json(error);
   }
 });
-
-
 
 //7. Listar los empleados con el cargo de "Vendedor"
 router.get("/endpoint7", async (req, res) => {
   try {
-    const response = await Empleado.find({cargo:"Vendedor"})
-      .populate("sucursalId");
+    const response = await Empleado.find({ cargo: "Vendedor" }).populate(
+      "sucursalId"
+    );
 
     res.json(response);
   } catch (error) {
@@ -388,78 +370,70 @@ router.get("/endpoint7", async (req, res) => {
   }
 });
 
-
-
-
 //8. Mostrar la cantidad total de automóviles disponibles en cada sucursal.
 router.get("/endpoint8", async (req, res) => {
   try {
-    const respuesta = []
+    const respuesta = [];
     const sucursales = await Sucursal.find();
     const automoviles = await Automovil.find();
 
-    sucursales.forEach(element => {
-      const result = automoviles.filter(data => data.sucursalId == String(element._id))
+    sucursales.forEach((element) => {
+      const result = automoviles.filter(
+        (data) => data.sucursalId == String(element._id)
+      );
       respuesta.push({
-        nombre:element.nombre,
+        nombre: element.nombre,
         totalAutos: result.length,
-        automoviles:result
-      })
+        automoviles: result,
+      });
     });
 
-    res.json(respuesta)
-
+    res.json(respuesta);
   } catch (error) {
     console.log(error);
     res.json(error);
   }
 });
-
-
 
 //9. Obtener el costo total de un alquiler específico.
 router.get("/endpoint9/:id", async (req, res) => {
   try {
-    const x = await Alquiler.findOne({_id:req.params.id})
+    const x = await Alquiler.findOne({ _id: req.params.id })
       .populate("clienteId")
       .populate("automovilId")
       .populate("sucursalId");
 
-
     const respuesta = {
-      nombre:x.clienteId,
-      costo: x.costo
-    }
+      nombre: x.clienteId,
+      costo: x.costo,
+    };
 
-    res.json(respuesta)
-
+    res.json(respuesta);
   } catch (error) {
     console.log(error);
     res.json(error);
   }
 });
 
-
 //10.Listar los clientes con el DNI específico.
 router.get("/endpoint10/:dni", async (req, res) => {
   try {
-
     const { dni } = req.params;
 
-    const clientes = await Cliente.find({DNI:Number(dni)});
+    const clientes = await Cliente.find({ DNI: Number(dni) });
     res.json(clientes);
-
   } catch (error) {
     console.log(error);
     res.json("error");
   }
 });
 
-
 //11.Mostrar todos los automóviles con una capacidad mayor a 5 personas.
 router.get("/endpoint11", async (req, res) => {
   try {
-    const response = await Automovil.find({ capacidad_personas: { $gte: 5 } }).populate("sucursalId");
+    const response = await Automovil.find({
+      capacidad_personas: { $gte: 5 },
+    }).populate("sucursalId");
 
     res.json(response);
   } catch (error) {
@@ -472,47 +446,40 @@ router.get("/endpoint11", async (req, res) => {
 //12.Obtener los detalles del alquiler que tiene fecha de inicio en '2023-07-05'.
 router.get("/endpoint12/:fecha", async (req, res) => {
   try {
-
     const { fecha } = req.params;
 
-    const response = await Alquiler.findOne({fechaInicio:fecha})
+    const response = await Alquiler.findOne({ fechaInicio: fecha })
       .populate("clienteId")
       .populate("automovilId")
-      .populate("sucursalId")
+      .populate("sucursalId");
 
     res.json(response);
-
   } catch (error) {
     console.log(error);
     res.json(error);
   }
 });
 
-
-
 //13. Listar las reservas pendientes realizadas por un cliente específico.
-router.get('/endpoint13/:idCliente', async (req, res) => {
+router.get("/endpoint13/:idCliente", async (req, res) => {
   const { idCliente } = req.params;
 
   try {
-    const reservas = await Reserva.find({ estado: 'Pendiente'});
+    const reservas = await Reserva.find({ estado: "Pendiente" });
 
-    const x =reservas.filter(data => (String(data.clienteId)) === (idCliente))
+    const x = reservas.filter((data) => String(data.clienteId) === idCliente);
 
     res.json(x);
-
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ error: 'Error al obtener los datos.' });
+    res.status(500).json({ error: "Error al obtener los datos." });
   }
 });
-
-
 
 router.get("/endpoint14", async (req, res) => {
   try {
     const response = await Empleado.find({
-      $or: [{ cargo: "Gerente" }, { cargo: "Asistente" }]
+      $or: [{ cargo: "Gerente" }, { cargo: "Asistente" }],
     }).populate("sucursalId");
 
     res.json(response);
@@ -522,8 +489,6 @@ router.get("/endpoint14", async (req, res) => {
   }
 });
 
-
-
 //15.Obtener los datos de los clientes que realizaron almenos un alquiler.
 router.get("/endpoint15", async (req, res) => {
   try {
@@ -531,19 +496,19 @@ router.get("/endpoint15", async (req, res) => {
       {
         $group: {
           _id: "$clienteId",
-          totalAlquileres: { $sum: 1 }
-        }
+          totalAlquileres: { $sum: 1 },
+        },
       },
       {
         $match: {
-          totalAlquileres: { $gte: 1 }
-        }
-      }
+          totalAlquileres: { $gte: 1 },
+        },
+      },
     ]);
 
     // Obtén los datos de los clientes que realizaron al menos un alquiler
     const clientesConAlquileres = await Cliente.find({
-      _id: { $in: response.map(item => item._id) }
+      _id: { $in: response.map((item) => item._id) },
     });
 
     res.json(clientesConAlquileres);
@@ -553,11 +518,12 @@ router.get("/endpoint15", async (req, res) => {
   }
 });
 
-
 //16.Listar todos los automóviles ordenados por marca y modelo.
 router.get("/endpoint16", async (req, res) => {
   try {
-    const response = await Automovil.find().sort({marca:1, modelo:1}).   populate("sucursalId");
+    const response = await Automovil.find()
+      .sort({ marca: 1, modelo: 1 })
+      .populate("sucursalId");
 
     res.json(response);
   } catch (error) {
@@ -567,27 +533,25 @@ router.get("/endpoint16", async (req, res) => {
   }
 });
 
-
-
 //17. Mostrar la cantidad total de automóviles en cada sucursal junto con su dirección.
 router.get("/endpoint17", async (req, res) => {
   try {
     const response = await Sucursal.aggregate([
       {
         $lookup: {
-          from: "automoviles", 
+          from: "automoviles",
           localField: "_id",
           foreignField: "sucursalId",
-          as: "automoviles"
-        }
+          as: "automoviles",
+        },
       },
       {
         $project: {
-          nombre: 1, 
-          direccion: 1, 
-          totalAutomoviles: { $size: "$automoviles" } 
-        }
-      }
+          nombre: 1,
+          direccion: 1,
+          totalAutomoviles: { $size: "$automoviles" },
+        },
+      },
     ]);
 
     res.json(response);
@@ -596,7 +560,6 @@ router.get("/endpoint17", async (req, res) => {
     res.json(error);
   }
 });
-
 
 //18.Obtener la cantidad total de alquileres registrados en la base de datos.
 router.get("/alquileresGet", async (req, res) => {
@@ -616,7 +579,10 @@ router.get("/alquileresGet", async (req, res) => {
 //19.Mostrar los automóviles con capacidad igual a 5 personas y que estén disponibles.
 router.get("/endpoint19", async (req, res) => {
   try {
-    const response = await Automovil.find({ capacidad_personas: { $eq: 5 }, disponibilidad: true }).populate("sucursalId");
+    const response = await Automovil.find({
+      capacidad_personas: { $eq: 5 },
+      disponibilidad: true,
+    }).populate("sucursalId");
 
     res.json(response);
   } catch (error) {
@@ -625,17 +591,15 @@ router.get("/endpoint19", async (req, res) => {
     res.json("error");
   }
 });
-
-//20.Obtener los datos del cliente que realizó la reservacon
-
+  
 //21.Listar los alquileres con fecha de inicio entre'2023-07-05'y'2023-07-10'.
 router.get("/endpoint21", async (req, res) => {
   try {
     const response = await Alquiler.find({
       fechaInicio: {
-        $gte: new Date("2023-07-05"),
-        $lte: new Date("2023-07-10")
-      }
+        $gte: "2023-07-05",
+        $lte: "2023-07-10",
+      },
     }).populate("clienteId automovilId sucursalId");
 
     res.json(response);
